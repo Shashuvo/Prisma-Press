@@ -18,7 +18,7 @@ const registerUser = catchAsync(async (req: Request, res: Response, next: NextFu
     //         user
     //     }
     // });
-    
+
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
@@ -27,6 +27,7 @@ const registerUser = catchAsync(async (req: Request, res: Response, next: NextFu
             user
         }
     });
+    
 });
 
 export const userController = {
