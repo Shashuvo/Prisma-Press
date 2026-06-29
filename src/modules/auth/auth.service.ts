@@ -47,8 +47,13 @@ const loginUser = async (payload: ILoginUser) => {
         accessToken,
         refreshToken
     };
+};
+
+const refreshToken = async () => {
+
 }
 
 export const authService = {
     loginUser,
+    refreshToken
 }
