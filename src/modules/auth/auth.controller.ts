@@ -30,7 +30,7 @@ const loginUser = catchAsync(async (req: Request, res: Response, next: NextFunct
 });
 
 const refreshToken = catchAsync(async (req: Request, res: Response, next: NextFunction) =>{
-    const refreshToken = req.body;
+    
 })
 
 export const authController = {
