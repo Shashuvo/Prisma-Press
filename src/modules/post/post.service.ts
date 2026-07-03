@@ -25,8 +25,34 @@ const getMyPostsFromDB = async () => {
 
 }
 
-const getPostByIdFromDB = async () => {
+// get post by id
+const getPostByIdFromDB = async (postId: string) => {
+    const post = await prisma.post.findUniqueOrThrow({
+        where: {
+            id: postId
+        }
+    });
 
+    const updatedPost = await prisma.post.update({
+        where: {
+            id: postId
+        },
+        data: {
+            views: {
+                increment: 1
+            }
+        },
+        include: {
+            author: {
+                omit: {
+                    password: true
+                }
+            },
+            comments: true
+        }
+    });
+
+    return updatedPost;
 }
 
 // create a post
