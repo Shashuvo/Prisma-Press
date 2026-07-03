@@ -1,9 +1,21 @@
 import { prisma } from "../../lib/prisma"
 import { ICreatePostPayload } from "./post.interface"
 
+// get all posts
 const getAllPostsFromDB = async () => {
+    const posts = await prisma.post.findMany({
+        include: {
+            author: {
+                omit: {
+                    password: true
+                }
+            },
+            comments: true
+        }
+    });
 
-}
+    return posts;
+};
 
 const getStatsFromDB = async () => {
 

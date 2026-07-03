@@ -4,8 +4,15 @@ import { catchAsync } from "../../utils/catchAsync";
 import { postService } from "./post.service";
 import { sendResponse } from "../../utils/sendResponse";
 
+// get all posts
 const getAllPosts = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-
+    const posts = await postService.getAllPostsFromDB();
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "All posts retrieved successfully.",
+        data: { posts }
+    })
 });
 
 const getStats = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
