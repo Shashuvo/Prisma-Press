@@ -5,6 +5,7 @@ import config from "./config";
 import { userRoutes } from "./modules/user/user.routes";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { postRoutes } from "./modules/post/post.routes";
+import { commentRoutes } from "./modules/comment/comment.routes";
 
 
 
@@ -31,5 +32,8 @@ app.use("/api/auth", authRoutes);
 
 // post routes
 app.use("/api/posts", postRoutes);
+
+// comment routes
+app.use("/api/comments", commentRoutes);
 
 export default app;
