@@ -6,6 +6,7 @@ import { userRoutes } from "./modules/user/user.routes";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { postRoutes } from "./modules/post/post.routes";
 import { commentRoutes } from "./modules/comment/comment.routes";
+import { notFound } from "./middleware/notFound";
 
 
 
@@ -35,5 +36,8 @@ app.use("/api/posts", postRoutes);
 
 // comment routes
 app.use("/api/comments", commentRoutes);
+
+// not found route
+app.use(notFound);
 
 export default app;
