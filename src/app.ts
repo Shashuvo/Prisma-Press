@@ -7,6 +7,7 @@ import { authRoutes } from "./modules/auth/auth.routes";
 import { postRoutes } from "./modules/post/post.routes";
 import { commentRoutes } from "./modules/comment/comment.routes";
 import { notFound } from "./middleware/notFound";
+import { globalErrorHandler } from "./middleware/globalErrorHandler";
 
 
 
@@ -39,5 +40,8 @@ app.use("/api/comments", commentRoutes);
 
 // not found route
 app.use(notFound);
+
+// global error handler route
+app.use(globalErrorHandler);
 
 export default app;
