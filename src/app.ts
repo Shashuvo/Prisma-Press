@@ -8,6 +8,7 @@ import { postRoutes } from "./modules/post/post.routes";
 import { commentRoutes } from "./modules/comment/comment.routes";
 import { notFound } from "./middleware/notFound";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
+import { subscriptionRoutes } from "./modules/subscription/subscription.route";
 
 
 
@@ -38,10 +39,14 @@ app.use("/api/posts", postRoutes);
 // comment routes
 app.use("/api/comments", commentRoutes);
 
+// subscription routes
+app.use("/api/subscription", subscriptionRoutes);
+
 // not found route
 app.use(notFound);
 
 // global error handler route
 app.use(globalErrorHandler);
+
 
 export default app;
