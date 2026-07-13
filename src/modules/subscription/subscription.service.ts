@@ -49,7 +49,10 @@ const createCheckoutSession = async (userId: string) => {
         paymentURL: transactionResult
     };
 };
+// handle Webhook
+const handleWebhook = async () => { };
 
 export const subscriptionService = {
-    createCheckoutSession
+    createCheckoutSession,
+    handleWebhook
 }
