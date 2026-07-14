@@ -78,9 +78,9 @@ const getAllPostsFromDB = async (query: IPostQuery) => {
         })
     }
 
-    // andConditions.push({
-    //     isPremium: false
-    // })
+    andConditions.push({
+        isPremium: false
+    })
 
     const posts = await prisma.post.findMany(
         {
@@ -406,7 +406,8 @@ const getPostByIdFromDB = async (postId: string) => {
 
             const post = await tx.post.findUniqueOrThrow({
                 where: {
-                    id: postId
+                    id: postId,
+                    isPremium: false
                 },
                 include: {
                     author: {
