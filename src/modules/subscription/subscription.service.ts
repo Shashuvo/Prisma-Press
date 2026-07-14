@@ -1,7 +1,8 @@
-import Stripe from "stripe";
+
 import config from "../../config";
 import { prisma } from "../../lib/prisma";
 import { stripe } from "../../lib/stripe";
+import { handleChangeSubscription, handleCheckoutCompleted } from "./subscription.utils";
 
 // create check out after payment
 const createCheckoutSession = async (userId: string) => {
@@ -67,9 +68,11 @@ const handleWebhook = async (payload: Buffer, signature: string) => {
             break;
         case 'customer.subscription.updated':
             // Occurs whenever a subscription changes (e.g., switching from one plan to another, or changing the status from trial to active).
+            await handleChangeSubscription(event.data.object);
             break;
         case 'customer.subscription.deleted':
             // Occurs whenever a customer’s subscription ends.
+            await handleChangeSubscription(event.data.object);
             break;
         default:
             // Unexpected event type
@@ -78,38 +81,6 @@ const handleWebhook = async (payload: Buffer, signature: string) => {
     }
 };
 
-// handle events
-const handleCheckoutCompleted = async (session: Stripe.Checkout.Session) => {
-    console.log("in event handle");
-    const userId = session.metadata?.userId;
-    const stripeCustomerId = session.customer as string;
-    const stripeSubscriptionId = session.subscription as string;
-    if (!userId || !stripeCustomerId || !stripeSubscriptionId) {
-        throw new Error("webhook failed!");
-    }
-    const stripeSubscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
-
-    const currentPeriodEndsMS = stripeSubscription.items.data[0]?.current_period_end!;
-    const currentPeriodEnd = new Date(currentPeriodEndsMS * 1000);
-    console.log(userId, stripeCustomerId, stripeSubscriptionId, currentPeriodEnd);
-
-    await prisma.subscription.upsert({
-        where: {
-            userId
-        },
-        create: {
-            userId,
-            stripeCustomerId,
-            stripeSubscriptionId,
-            currentPeriodEnd
-        },
-        update: {
-            stripeCustomerId,
-            stripeSubscriptionId,
-            currentPeriodEnd
-        }
-    })
-};
 
 export const subscriptionService = {
     createCheckoutSession,
