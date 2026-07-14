@@ -1,0 +1,22 @@
+import { NextFunction, Request, Response } from "express"
+import { catchAsync } from "../utils/catchAsync"
+import { prisma } from "../lib/prisma";
+import { SubscriptionStatus } from "../../generated/prisma/enums";
+
+export const subscriptionGuard = () => {
+    return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const userId = req.user?.id as string;
+        const subscription = await prisma.subscription.findUnique({
+            where: {
+                userId
+            }
+        });
+        if (!subscription) {
+            throw new Error("Please subscribe to access this content.");
+        }
+        if (subscription.status !== SubscriptionStatus.ACTIVE) {
+            throw new Error("Your subscription is canceled or expired. Please subscribe again to access this content.")
+        }
+        next();
+    })
+}
