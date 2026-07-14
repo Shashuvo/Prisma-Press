@@ -80,9 +80,22 @@ const handleWebhook = async (payload: Buffer, signature: string) => {
             break;
     }
 };
-
+// get subscription status
+const getSubscriptionStatus = async (userId: string) => {
+    const isSubscriptionExists = await prisma.subscription.findUniqueOrThrow({
+        where: { userId }
+    })
+    const isActive = isSubscriptionExists.status === "ACTIVE" &&
+        isSubscriptionExists.currentPeriodEnd && new Date(isSubscriptionExists.currentPeriodEnd) > new Date();
+    return {
+        status: isSubscriptionExists.status,
+        isSubscribed: isActive,
+        currentPeriodEnd: isSubscriptionExists.currentPeriodEnd
+    }
+}
 
 export const subscriptionService = {
     createCheckoutSession,
-    handleWebhook
+    handleWebhook,
+    getSubscriptionStatus
 }

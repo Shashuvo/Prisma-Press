@@ -8,5 +8,7 @@ const router = Router();
 router.post("/checkout", auth(), subscriptionController.createCheckOutSession);
 // stripe webhook
 router.post("/webhook", subscriptionController.handleWebhook);
+// get subscription status
+router.get("/status", auth(), subscriptionController.getSubscriptionStatus);
 
 export const subscriptionRoutes = router;
