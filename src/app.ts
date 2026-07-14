@@ -9,6 +9,7 @@ import { commentRoutes } from "./modules/comment/comment.routes";
 import { notFound } from "./middleware/notFound";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { subscriptionRoutes } from "./modules/subscription/subscription.route";
+import { premiumRoutes } from "./modules/premium/premium.routes";
 
 
 
@@ -43,6 +44,9 @@ app.use("/api/comments", commentRoutes);
 
 // subscription routes
 app.use("/api/subscription", subscriptionRoutes);
+
+// premium post routes
+app.use("/api/premium", premiumRoutes);
 
 // not found route
 app.use(notFound);
